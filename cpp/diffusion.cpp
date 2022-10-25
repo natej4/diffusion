@@ -3,9 +3,16 @@
 
 using namespace std;
 
-int main(){
-    const int maxsize = 10;
-    double cube[maxsize][maxsize][maxsize];
+int main(int argc, char** argv){
+    const int maxsize = stoi(argv[1]);
+    // double cube[maxsize][maxsize][maxsize];
+    double*** cube =  new double** [maxsize];
+    for (int i = 0; i < maxsize; ++i) {
+      cube[i] = new double* [maxsize];
+      for (int j = 0; j < maxsize; j++) {
+          cube[i][j] = new double [maxsize];
+          }
+     }
     double diffusion_coefficient = 0.175;
     double room_dimension = 5;
     double speed_of_gas_molecules = 250.0;
@@ -76,5 +83,13 @@ int main(){
         cout << " " << sumval << endl;
     }   while (ratio < 0.99);
     cout << "Box equilibrated in " << time << " seconds of simulated time." << endl;
+
+    for (int i=0; i<maxsize; i++ ) {
+        for (int j=0; j<maxsize; j++ ) {
+            delete[] cube[i][j];
+        }
+        delete[] cube[i];
+    }
+    delete[] cube;
     
 }
