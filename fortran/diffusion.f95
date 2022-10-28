@@ -58,8 +58,6 @@ program diffusion
                 do k = 1,maxsize
                     maxval = MAX(cube(i,j,k), maxval)
                     minval = MIN(cube(i,j,k), minval)
-                    ! print *, sumval
-
                     sumval = sumval + cube(i,j,k)
                 enddo
             enddo

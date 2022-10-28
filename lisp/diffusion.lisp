@@ -37,7 +37,6 @@
 (defvar maxval )
 
 (defvar minval )
-(print sumval )
 (loop 
     (unless (< myratio 0.99)
         (return 0))
