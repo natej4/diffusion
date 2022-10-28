@@ -22,6 +22,7 @@ program diffusion
         enddo
     enddo
 
+
     cube(1,1,1) = 1.0e21
 
     do while (ratio < 0.99)
@@ -51,20 +52,23 @@ program diffusion
 
         maxval = cube(1,1,1)
         minval = cube(1,1,1)
+        sumval = 0
         do i = 1,maxsize
             do j = 1,maxsize
                 do k = 1,maxsize
                     maxval = MAX(cube(i,j,k), maxval)
                     minval = MIN(cube(i,j,k), minval)
+                    ! print *, sumval
+
                     sumval = sumval + cube(i,j,k)
                 enddo
             enddo
         enddo
         ratio = minval / maxval
 
-        !output
-        ! print '(f11.8, " ",4e20.6, " ",e20.5,/)', time, cube(1,1,1), cube(maxsize,1,1), &
-        ! &cube(maxsize,maxsize,1), cube(maxsize,maxsize,maxsize), sumval
+        ! output
+        print '(f11.8, " ",4e20.6, " ",e21.4,/)', time, cube(1,1,1), cube(maxsize,1,1), &
+        &cube(maxsize,maxsize,1), cube(maxsize,maxsize,maxsize), sumval
         
 
     enddo

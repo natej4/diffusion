@@ -37,7 +37,7 @@
 (defvar maxval )
 
 (defvar minval )
-
+(print sumval )
 (loop 
     (unless (< myratio 0.99)
         (return 0))
@@ -62,6 +62,7 @@
 
 (setf maxval (aref cube 0 0 0))
 (setf minval (aref cube 0 0 0))
+(setq sumval 0)
 
 
 (loop for i from 0 to (1- maxsize)
