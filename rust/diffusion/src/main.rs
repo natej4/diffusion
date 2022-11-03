@@ -2,9 +2,11 @@ extern crate ndarray;
 //extern crate scinotation
 use ndarray::Array3;
 use min_max::*;
+// use std::env;
 
 const MAXSIZE: usize = 10;
 fn main() {
+    // env::set_var("RUST_BACKTRACE", "full");
 let mut cube = Array3::<f64>::zeros((MAXSIZE,MAXSIZE,MAXSIZE));
 
 let diffusion_coefficient = 0.175;
@@ -26,11 +28,11 @@ while ratio < 0.99 {
                     for m in 0..MAXSIZE {
                         for n in 0..MAXSIZE {
                             if  ( ( i == l )   && ( j == m )   && ( k == n+1) ) ||  
-                                ( ( i == l )   && ( j == m )   && ( k == n-1) ) ||  
+                                ( ( i == l )   && ( j == m )   && ( k as i64 == n as i64-1) ) ||  
                                 ( ( i == l )   && ( j == m+1 ) && ( k == n)   ) ||  
-                                ( ( i == l )   && ( j == m-1 ) && ( k == n)   ) ||  
+                                ( ( i == l )   && ( j as i64 == m as i64-1 ) && ( k == n)   ) ||  
                                 ( ( i == l+1 ) && ( j == m )   && ( k == n)   ) ||  
-                                ( ( i == l-1 ) && ( j == m )   && ( k == n)   )  {
+                                ( ( i as i64 == l as i64-1 ) && ( j == m )   && ( k == n)   )  {
                                     let change = (cube[[i,j,k]]-cube[[l,m,n]]) * dterm;
                                     cube[[i,j,k]] -= change;
                                     cube[[l,m,n]] += change;
