@@ -3,10 +3,12 @@
 ;;;; Written by Nate Jackson
 ;;;; Modeling the diffusion of gas within a room
 
-;; (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
 
 (progn
-(defconstant maxsize 10) ;const for room size
+(defvar maxsize)
+(princ "Enter value for maxsize: ")
+(terpri)
+(setq maxsize (read))
 (defvar cube (make-array '(10 10 10))) ;the room
 ;;zeroing out the room
 (loop for i from 0 to (1- maxsize)

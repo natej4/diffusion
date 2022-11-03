@@ -1,11 +1,16 @@
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
-int main(int argc, char** argv){
-    const int maxsize = stoi(argv[1]);
-    // double cube[maxsize][maxsize][maxsize];
+int main(){
+    int maxsize;
+    string temp;
+    cout << "Enter maxsize: ";
+    cin >> temp;
+    maxsize = stoi(temp);
+    // int maxsize = 10;
     double*** cube =  new double** [maxsize];
     for (int i = 0; i < maxsize; ++i) {
       cube[i] = new double* [maxsize];

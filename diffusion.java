@@ -75,15 +75,15 @@ public class  diffusion {
             }
         }
     }
-    
+    System.out.println(maxval + " "+ minval);
     ratio = minval / maxval;
     
     //System.out.println( ratio + " time = " + time);
-    System.out.print( time + " " + cube[0][0][0] );
-    System.out.print(        " " + cube[maxsize-1][0][0] );
-    System.out.print(        " " + cube[maxsize-1][maxsize-1][0] );
-    System.out.print(        " " + cube[maxsize-1][maxsize-1][maxsize-1] );
-    System.out.print(        " " + sumval + "\n");
+    // System.out.print( time + " " + cube[0][0][0] );
+    // System.out.print(        " " + cube[maxsize-1][0][0] );
+    // System.out.print(        " " + cube[maxsize-1][maxsize-1][0] );
+    // System.out.print(        " " + cube[maxsize-1][maxsize-1][maxsize-1] );
+    // System.out.print(        " " + sumval + "\n");
     } while ( ratio < 0.99 );
     
     System.out.println( "Box equilibrated in " + time + " seconds of simulated time." );

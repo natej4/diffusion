@@ -1,19 +1,23 @@
 extern crate ndarray;
-//extern crate scinotation
 use ndarray::Array3;
 use min_max::*;
-// use std::env;
+use std::io;
 
-const MAXSIZE: usize = 10;
 fn main() {
-    // env::set_var("RUST_BACKTRACE", "full");
-let mut cube = Array3::<f64>::zeros((MAXSIZE,MAXSIZE,MAXSIZE));
+    println!("Enter value for maxsize: ");
+    let mut n = String::new();
+    
+    io::stdin()
+        .read_line(&mut n)
+        .expect("failed to read input.");
+    let maxsize = n.trim().parse::<usize>().expect("invalid input");
+let mut cube = Array3::<f64>::zeros((maxsize,maxsize,maxsize));
 
 let diffusion_coefficient = 0.175;
 let room_dimension = 5.0;
 let speed_of_gas_molecules = 250.0;
-let timestep = (room_dimension / speed_of_gas_molecules) / MAXSIZE as f64;
-let distance_between_blocks = room_dimension / MAXSIZE as f64;
+let timestep = (room_dimension / speed_of_gas_molecules) / maxsize as f64;
+let distance_between_blocks = room_dimension / maxsize as f64;
 let dterm = diffusion_coefficient * timestep / (distance_between_blocks * distance_between_blocks);
 cube[[0,0,0]] = 1.0e+21_f64;
 let _pass = 0;
@@ -21,12 +25,12 @@ let mut time = 0.0;
 let mut ratio = 0.0;
 
 while ratio < 0.99 {
-    for i in 0..MAXSIZE {
-        for j in 0..MAXSIZE {
-            for k in 0..MAXSIZE {
-                for l in 0..MAXSIZE {
-                    for m in 0..MAXSIZE {
-                        for n in 0..MAXSIZE {
+    for i in 0..maxsize {
+        for j in 0..maxsize {
+            for k in 0..maxsize {
+                for l in 0..maxsize {
+                    for m in 0..maxsize {
+                        for n in 0..maxsize {
                             if  ( ( i == l )   && ( j == m )   && ( k == n+1) ) ||  
                                 ( ( i == l )   && ( j == m )   && ( k as i64 == n as i64-1) ) ||  
                                 ( ( i == l )   && ( j == m+1 ) && ( k == n)   ) ||  
@@ -49,9 +53,9 @@ while ratio < 0.99 {
     let mut sumval = 0.0;
     let mut maxval = cube[[0,0,0]];
     let mut minval = cube[[0,0,0]];
-    for i in 0..MAXSIZE {
-        for j in 0..MAXSIZE {
-            for k in 0..MAXSIZE {
+    for i in 0..maxsize {
+        for j in 0..maxsize {
+            for k in 0..maxsize {
 
                 maxval = max_partial!(cube[[i,j,k]], maxval);
                 minval = min_partial!(cube[[i,j,k]], minval);
@@ -64,9 +68,9 @@ while ratio < 0.99 {
 
     ratio = minval / maxval;
     print!("{} {}",time,cube[[0,0,0]]);
-    print!(" {}",cube[[MAXSIZE-1,0,0]]);
-    print!(" {}",cube[[MAXSIZE-1,MAXSIZE-1,0]]);
-    print!(" {}",cube[[MAXSIZE-1,MAXSIZE-1,MAXSIZE-1]]);
+    print!(" {}",cube[[maxsize-1,0,0]]);
+    print!(" {}",cube[[maxsize-1,maxsize-1,0]]);
+    print!(" {}",cube[[maxsize-1,maxsize-1,maxsize-1]]);
     println!(" {}",sumval);
 
 
