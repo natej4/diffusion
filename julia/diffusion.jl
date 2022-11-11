@@ -1,11 +1,12 @@
+#!/usr2/local/julia-1.8.2/bin/julia
 using Printf
-
-const maxsize = 5
-cube = zeros(maxsize, maxsize, maxsize)
+print("What is maxsize? ")
+const maxsize = parse(Int32, readline())
+cube = Array{Float64,3}(undef,maxsize, maxsize, maxsize)
 diffusion_coefficient = 0.175
 room_dimension = 5
 speed_of_gas_molecules = 250
-timestep = (room_dimension / speed_of_gas_molecules) /maxsize
+timestep = (room_dimension / speed_of_gas_molecules) / maxsize
 distance_between_blocks = room_dimension / maxsize
 DTerm = diffusion_coefficient * timestep / (distance_between_blocks*distance_between_blocks)
 
@@ -15,7 +16,7 @@ pass = 0
 time = 0.0
 ratio = 0.0
 
-while ratio < 2
+while ratio < .99
     for i in 1:maxsize, j in 1:maxsize, k in 1:maxsize, 
         l in 1:maxsize, m in 1:maxsize, n in 1:maxsize
         if i == l && j == m && k == n+1 ||
@@ -26,11 +27,11 @@ while ratio < 2
             i == l-1 && j == m && k == n
             change = (cube[i,j,k]- cube[l, m, n]) * DTerm
             cube[i, j, k] -= change
-            cube[i,j,k] += change
-            println(cube[i,j,k], cube[l,m,n])
+            cube[l,m,n] += change
+            # println(cube[i,j,k], cube[l,m,n])
         end
     end
-    println()
+    # println()
     global time += timestep
 
     global sumval = 0.0
@@ -42,13 +43,13 @@ while ratio < 2
         global sumval += cube[i,j,k]
     end
     
-    global ratio += 1
+    global ratio = minval / maxval
 
-    # @printf("%f %e",time, cube[1,1,1])
-    # @printf(" %e",cube[maxsize,1,1])
-    # @printf(" %e",cube[maxsize,maxsize,1])
-    # @printf(" %e",cube[maxsize,maxsize,maxsize])
-    # @printf(" %e\n",sumval)
+    @printf("%f %e",time, cube[1,1,1])
+    @printf(" %e",cube[maxsize,1,1])
+    @printf(" %e",cube[maxsize,maxsize,1])
+    @printf(" %e",cube[maxsize,maxsize,maxsize])
+    @printf(" %e\n",sumval)
     
     # print(time)
     # print(" ")
@@ -63,4 +64,4 @@ while ratio < 2
     # println(sumval)
 end
 
-@printf("Box equilibrated in %f seconds of simulated time.\n")
+@printf("Box equilibrated in %f seconds of simulated time.\n", time)
