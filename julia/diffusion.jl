@@ -35,16 +35,6 @@ if p
 	end
     end
 end
-for i in 1:maxsize+2 
-for j in 1:maxsize+2
-	for k in 1:maxsize+2
-	print(cube[i,j,k])
-	print(" ")
-end
-print("\n")
-end
-print("\n")
-end
 
 while ratio < .99
     for i in 2:maxsize+1, j in 2:maxsize+1, k in 2:maxsize+1, 
