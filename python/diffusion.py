@@ -4,7 +4,7 @@ import math
 
 
 maxsize = int(input("Enter value for maxsize: "))
-temp = input("75% partition y/n?")
+temp = input("75% partition y/n? ")
 cube = np.zeros((maxsize+2, maxsize+2, maxsize+2))
 diffusion_coefficient = 0.175
 room_dimension = 5
@@ -19,9 +19,9 @@ time = 0.0
 ratio = 0.0
 if temp == "y":
 	partition = True
-if partition:
-	partX = int(math.floor((maxsize+1)/2))
-	partY = int(math.floor((maxsize+1)*0.5))
+
+partX = int(math.floor((maxsize+1)/2))
+partY = int(math.floor((maxsize+1)*0.5))
 for i in range(1,maxsize+1):
 	for j in range(1,maxsize+1):
 		for k in range(1,maxsize+1):

@@ -2,7 +2,7 @@ extern crate ndarray;
 use ndarray::Array3;
 use min_max::*;
 use std::{io, convert::TryInto};
-use math::round::floor;
+
 
 fn main() {
     println!("Enter value for maxsize: ");
@@ -20,11 +20,6 @@ let mut cube = Array3::<f64>::zeros((maxsize+2,maxsize+2,maxsize+2));
          .read_line(&mut t)
          .expect("failed to read input.");
      let partition = t.trim().parse().unwrap();
-//let mut partition = true;
-// t.trim();
-// if t == "y"{
-//     partition = true;
-// }
 
 let mut partx = 0.0;
 let mut party = 0.0;

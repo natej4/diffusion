@@ -16,6 +16,7 @@ Within the 'Diffusion' Project Folder:
 '''bash
 cargo run --release
 '''
+
 *note: it will run without the --release option but my timing was done with it enabled*
 
 ###Julia
