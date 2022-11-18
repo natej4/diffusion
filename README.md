@@ -27,6 +27,7 @@ Enter integer for maxsize, then type 'true' or 'false' (spelled out) for partiti
 ```bash
 python3 diffusion.py
 ```
+In a futile attempt to optimize python, I implemented comprehensions for the giant nested for loop, that is why it looks a bit different than other languages
 ### Fortran
 ```bash
 gfortran diffusion.f95 -o diffusion
