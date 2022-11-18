@@ -19,7 +19,7 @@ Procedure diffusion is
     change : Float;
     partition : Boolean := false;
     temp : Character;
-    partitionsize : Float := 0.5;
+    partitionsize : Float := 0.75;
 
     begin
 --  user input

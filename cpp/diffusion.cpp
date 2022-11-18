@@ -27,7 +27,7 @@ int main(){
     //setting location of partition
     if (p){
         partX = floor((maxsize+1)/2);
-        partZ = floor((maxsize+1)*.5);
+        partZ = floor((maxsize+1)*.75);
     }
     
     //array memory allocation

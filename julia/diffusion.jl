@@ -24,7 +24,7 @@ if temp == "y"
 end
 #location of partition
 partx = ceil((maxsize+2)/2)
-party = ceil((maxsize+2)*0.5)
+party = ceil((maxsize+2)*0.75)
 cube[2,2,2] = 1.0e21 # fill first cell
 
 pass = 0

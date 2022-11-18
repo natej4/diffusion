@@ -30,7 +30,7 @@ fn main() {
     let mut party = 0.0;
     if partition {
         partx = math::round::floor((maxsize+1) as f64/2 as f64, 0);
-        party = math::round::floor((maxsize+1) as f64*0.5 as f64, 0);
+        party = math::round::floor((maxsize+1) as f64*0.75 as f64, 0);
     }
 
     let diffusion_coefficient = 0.175;

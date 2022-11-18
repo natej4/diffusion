@@ -27,7 +27,7 @@
 (setf cube (make-array (list (+ 2 maxsize) (+ 2 maxsize) (+ 2 maxsize)))) ;the room
 ;; setting location of partition
 (setf partx (floor(* (+ maxsize 1) 0.5)))
-(setf party (floor(* (+ maxsize 1) 0.5)))
+(setf party (floor(* (+ maxsize 1) 0.75)))
 
 ;;zeroing out the room
 (loop for i from 0 to (1+ maxsize)
