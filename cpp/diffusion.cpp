@@ -2,13 +2,18 @@
 #include <algorithm>
 #include <string>
 #include <cmath>
+//Nate Jackson
+//Modeling the diffusion of a gas within a cube
+//For CSC 330
+//11-18-2022
 
 using namespace std;
 
 int main(){
-    int maxsize;
+    int maxsize; //dimensions of the room i.e. maxsize x maxsize x maxsize cubes
     float partX, partZ;
     string temp;
+    //user input
     cout << "Enter maxsize: ";
     cin >> temp;
     maxsize = stoi(temp);
@@ -19,12 +24,13 @@ int main(){
     if(pinput == "y"){
         p = true;
     }
+    //setting location of partition
     if (p){
         partX = floor((maxsize+1)/2);
         partZ = floor((maxsize+1)*.5);
     }
     
-    
+    //array memory allocation
     double*** cube =  new double** [maxsize+2];
     for (int i = 0; i <= maxsize+1; ++i) {
         cube[i] = new double* [maxsize+2];
@@ -32,6 +38,7 @@ int main(){
           cube[i][j] = new double [maxsize+2];
         }
     }
+    //variable declaration
     double diffusion_coefficient = 0.175;
     double room_dimension = 5;
     double speed_of_gas_molecules = 250.0;
@@ -40,21 +47,18 @@ int main(){
     double DTerm = diffusion_coefficient * timestep 
                     / (distance_between_blocks * distance_between_blocks);
 
-    int pass = 0;
     double time = 0.0;
     double ratio = 0.0; 
 
     double sumval, maxval, minval;
     int count = 0;
+
     //zeroing out the room
     for (int i = 0; i <= maxsize+1; i++) {
         for (int j = 0; j <= maxsize+1; j++) {
             for (int k = 0; k <= maxsize+1; k++) {
-                if (i == 0 || j == 0 || k == 0 || i ==maxsize+1 || j == maxsize+1 || k == maxsize+1){
-                    cube[i][j][k] = 1;
-                }
-                else if (i == partX && j >= partZ){
-                    cube[i][j][k] = 2;
+                if (i == partX && j >= partZ){
+                    cube[i][j][k] = 2.0;
                 }
                 else{
                     cube[i][j][k] = 0.0;
@@ -65,42 +69,37 @@ int main(){
         }
     }
     
+    cube[1][1][1] = 1.0e21;//placing gas in first cell of room
     
-    cube[1][1][1] = 1.0e21;
     do {
+        //diffusion process
         for (int i = 1; i <= maxsize; i++) {
             for (int j = 1; j <= maxsize; j++) {
                 for (int k = 1; k <= maxsize; k++) {
                     for (int l = 1; l <= maxsize; l++) {
                         for (int m = 1; m <= maxsize; m++) {
                             for (int n = 1; n <= maxsize; n++) {
+                                //if the cubes are next to each other, diffuse
                                 if (( ( i == l )   && ( j == m )   && ( k == n+1) ) ||  
                                     ( ( i == l )   && ( j == m )   && ( k == n-1) ) ||  
                                     ( ( i == l )   && ( j == m+1 ) && ( k == n)   ) ||  
                                     ( ( i == l )   && ( j == m-1 ) && ( k == n)   ) ||  
                                     ( ( i == l+1 ) && ( j == m )   && ( k == n)   ) ||  
                                     ( ( i == l-1 ) && ( j == m )   && ( k == n)   )) {
-                                        
-                                                if(p){
-                                                    // if ((l != int(partX) && j < int(partZ))){
-                                                        if (cube[l][m][n] != 2 && cube[i][j][k] != 2){
-                                                        double change = (cube[i][j][k] - cube [l][m][n]) * DTerm;
-                                                        cube[i][j][k] -= change;
-                                                        cube[l][m][n] += change;
-                                                    }
-                                                }
-                                                else {
-                                                    double change = (cube[i][j][k] - cube [l][m][n]) * DTerm;
-                                                    cube[i][j][k] -= change;
-                                                    cube[l][m][n] += change;
-                                                }
-                                            
-                                        
-                                        
-                                        // else{
-                                        //     cout << "no" << endl;
-                                        // }
+
+                                    if(p){
+                                        if (cube[l][m][n] != 2 && cube[i][j][k] != 2){
+                                            double change = (cube[i][j][k] - cube [l][m][n]) * DTerm;
+                                            cube[i][j][k] -= change;
+                                            cube[l][m][n] += change;
+                                        }
                                     }
+                                    else {
+                                        double change = (cube[i][j][k] - cube [l][m][n]) * DTerm;
+                                        cube[i][j][k] -= change;
+                                        cube[l][m][n] += change;
+                                    }                                                                            
+                                }
                             }
                         }
                     }
@@ -108,7 +107,7 @@ int main(){
             }
         }
         time += timestep;
-
+        //now checking to see if fully diffused
         sumval = 0.0;
         maxval = cube[1][1][1];
         minval = cube[1][1][1];
@@ -120,20 +119,20 @@ int main(){
                         minval = min(cube[i][j][k], minval);
                         sumval += cube[i][j][k];
                     }
-                    
                 }
             }
         }
         ratio = minval / maxval;
-
+        //output current status of diffusion
         cout << time << " " << cube[1][1][1];
         cout << " " << cube[maxsize][1][1];
         cout << " " << cube[maxsize][maxsize][1];
         cout << " " << cube[maxsize][maxsize][maxsize];
-        cout << " " << sumval << endl;
+        cout << " " << sumval << endl; //monitors conservation of mass
     }   while (ratio < 0.99);
     cout << "Box equilibrated in " << time << " seconds of simulated time." << endl;
 
+    //deallocation of memory
     for (int i=0; i<=maxsize+1; i++ ) {
         for (int j=0; j<=maxsize+1; j++ ) {
             delete[] cube[i][j];
@@ -141,5 +140,4 @@ int main(){
         delete[] cube[i];
     }
     delete[] cube;
-    
 }

@@ -1,11 +1,16 @@
 #!/usr/bin/python3
 import numpy as np
 import math
+# Nate Jackson
+# Modeling the diffusion of a gas within a room
+# Written for CSC 330 Project 2
+# 11/18/2022
 
-
+#user input
 maxsize = int(input("Enter value for maxsize: "))
 temp = input("75% partition y/n? ")
-cube = np.zeros((maxsize+2, maxsize+2, maxsize+2))
+
+cube = np.zeros((maxsize+2, maxsize+2, maxsize+2)) #the room
 diffusion_coefficient = 0.175
 room_dimension = 5
 speed_of_gas_molecules = 250.0
@@ -19,9 +24,11 @@ time = 0.0
 ratio = 0.0
 if temp == "y":
 	partition = True
-
-partX = int(math.floor((maxsize+1)/2))
-partY = int(math.floor((maxsize+1)*0.5))
+# determining location of partition
+if partition:
+	partX = int(math.floor((maxsize+1)/2))
+	partY = int(math.floor((maxsize+1)*0.5))
+#placing partition
 for i in range(1,maxsize+1):
 	for j in range(1,maxsize+1):
 		for k in range(1,maxsize+1):
@@ -31,6 +38,7 @@ for i in range(1,maxsize+1):
 #first cell
 cube[1][1][1] = 1.0e21
 
+#function for diffusion between cells
 def changing(i, j, k, l, m, n):
 	if (( i == l ) and ( j == m ) and ( k == n+1)) or (( i == l ) and ( j == m ) and ( k == n-1) ) or ( ( i == l ) and ( j == m+1 ) and ( k == n)) or ( ( i == l ) and ( j == m-1 ) and ( k == n)) or ( ( i == l+1 ) and ( j == m )and ( k == n)) or ( ( i == l-1 ) and ( j == m ) and ( k == n)):
 		if partition:
@@ -45,7 +53,7 @@ def changing(i, j, k, l, m, n):
 
 
 while ratio < 0.99:
-
+#call diffusion function across all cells
 	[[[[[[changing(i,j,k,l,m,n) for n in range(1,maxsize+1) ] 
 	for m in range(1, maxsize+1)]
 	for l in range(1, maxsize+1)]
@@ -54,7 +62,7 @@ while ratio < 0.99:
 	for i in range(1, maxsize+1)]
 
 	time += timestep
-
+#check to see if room is fully diffused
 	sumval = 0.0
 	maxval = cube[1][1][1]
 	minval = cube[1][1][1]
@@ -67,8 +75,7 @@ while ratio < 0.99:
 					sumval += cube[i][j][k]
 
 	ratio = minval / maxval
-
+#output
 	print(time, " ", cube[1][1][1], " ", cube[maxsize][1][1], " ", cube[maxsize][maxsize][1], " ", cube[maxsize][maxsize][maxsize], " ", sumval)
-   
-
+	#end of while loop
 print("Box equilibrated in ", time, " seconds of simulated time.")
