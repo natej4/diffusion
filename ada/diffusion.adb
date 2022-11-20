@@ -19,7 +19,7 @@ Procedure diffusion is
     change : Float;
     partition : Boolean := false;
     temp : Character;
-    partitionsize : Float := 0.75;
+    partitionsize : Float := 1.0-0.75;
 
     begin
 --  user input
@@ -37,13 +37,16 @@ Procedure diffusion is
             DTerm : Float := diffusion_coefficient * timestep / (distance_between_blocks*distance_between_blocks);
             cube : Three_Dimensional_Float_Array (1..MaxSize+2, 1..MaxSize+2, 1..MaxSize+2) := (others => (others => (others => 0.0)));
             partX : Float := Float'Ceiling(Float (MaxSize+2)/2.0);
-            partY : Float := Float'Ceiling(Float (MaxSize+2)*partitionsize);
+            partY : Float := Float'Ceiling(Float (MaxSize+1)*0.25)+1.0;
         begin
 --  creating partition     
         if (partition) then
-            for i in 1..MaxSize+2 loop
-                for j in 1..MaxSize+2 loop
-                    for k in 1..MaxSize+2 loop
+			if (maxsize mod  2 = 0) then
+				partY := partY-1.0;
+			end if;
+            for i in 2..MaxSize+1 loop
+                for j in 2..MaxSize+1 loop
+                    for k in 2..MaxSize+1 loop
                         if (i = Integer (partX) and j >= Integer (partY)) then
                             cube(i,j,k) := 2.0;
                         end if;
@@ -52,7 +55,6 @@ Procedure diffusion is
             end loop;
         end if;
         cube(2,2,2) := 1.0e21;--filling first cell
-
         while ratio < 0.99 loop
         -- diffusion
             for i in 2..MaxSize+1 loop

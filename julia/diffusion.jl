@@ -7,7 +7,7 @@ using Printf
 
 # User input
 print("What is maxsize? ")
-const maxsize = parse(Int32, readline())
+maxsize = parse(Int32, readline())
 print("75% parttition y/n? ")
 temp = readline()
 
@@ -24,20 +24,27 @@ if temp == "y"
 end
 #location of partition
 partx = ceil((maxsize+2)/2)
-party = ceil((maxsize+2)*0.75)
-cube[2,2,2] = 1.0e21 # fill first cell
+party = ceil((maxsize+2)*0.25)+1
+if maxsize % 2 == 0
+	party  -= 1
+end
 
+cube[2,2,2] = 1.0e21 # fill first cell
+#print(party)
+#print("\n")
+#exit()
 pass = 0
 time = 0.0
 ratio = 0.0
 #creation of partition
 if p
-    for i in 1:maxsize+2, j in 1:maxsize+2, k in 1:maxsize+2
+    for i in 2:maxsize+1, j in 2:maxsize+1, k in 2:maxsize+1
         if i == partx && j >= party
-	        cube[i,j,k] = 2.0
-        end
+	        cube[i,j,k]= 2.0
+		end
     end
 end
+
 
 while ratio < .99
     #diffusion
