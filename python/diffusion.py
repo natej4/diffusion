@@ -27,7 +27,7 @@ if temp == "y":
 # determining location of partition
 if partition:
 	partX = int(math.floor((maxsize+1)/2))
-	partY = int(math.floor((maxsize+1)*0.75))
+	partY = int(math.ceil((maxsize+1)*0.25))
 #placing partition
 for i in range(1,maxsize+1):
 	for j in range(1,maxsize+1):
