@@ -27,7 +27,7 @@ int main(){
     //setting location of partition
     if (p){
         partX = floor((maxsize+1)/2);
-        partZ = floor((maxsize+1)*.75);
+        partZ = ceil((maxsize+1)*.25);
     }
     
     //array memory allocation
@@ -70,7 +70,16 @@ int main(){
     }
     
     cube[1][1][1] = 1.0e21;//placing gas in first cell of room
-    
+   
+    for (int i = 0; i <= maxsize+1; i++) {
+        for (int j = 0; j <= maxsize+1; j++) {
+            for (int k = 0; k <= maxsize+1; k++) {             
+                   cout <<  cube[i][j][k] << " ";
+                 }
+				cout << endl;
+            }
+cout << endl;
+        }
     do {
         //diffusion process
         for (int i = 1; i <= maxsize; i++) {

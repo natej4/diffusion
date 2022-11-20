@@ -19,15 +19,13 @@
 (terpri)
 (let ((temp))
 	(setq temp (read))
-    (princ temp)
-    (terpri)
 	(if (string= temp "Y")
 		(setf p 1)))
 
 (setf cube (make-array (list (+ 2 maxsize) (+ 2 maxsize) (+ 2 maxsize)))) ;the room
 ;; setting location of partition
 (setf partx (floor(* (+ maxsize 1) 0.5)))
-(setf party (floor(* (+ maxsize 1) 0.75)))
+(setf party (ceiling(* (+ maxsize 1) 0.25)))
 
 ;;zeroing out the room
 (loop for i from 0 to (1+ maxsize)
