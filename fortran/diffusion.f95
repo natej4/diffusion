@@ -6,8 +6,8 @@
 program diffusion
     implicit none
 
-    integer :: i, j, k, l, m, n
-    character :: temp 
+    integer :: i, j, k, l, m, n, tempint
+    character(len=3) :: temp, temp2 
     integer :: maxsize ! dimensions of the cube in terms of cells
     ! real, dimension(maxsize+2, maxsize+2, maxsize+2) :: cube
     real, dimension(:,:,:), allocatable :: cube
@@ -16,14 +16,22 @@ program diffusion
     real :: time = 0.0, ratio = 0.0, change, sumval = 0.0, maxval, minval
     logical :: partition = .false.
     integer :: partX, partY
-    Call get_command_argument(1, temp)
-    read(temp,*) maxsize
+    do i=1,command_argument_count()-1
+        if (i > 1) then 
+            maxsize = maxsize * 10
+        endif
+        Call get_command_argument(i, temp)
+        read(temp,*) tempint
+        maxsize = maxsize + tempint
+        
+    enddo
+print *, maxsize
     allocate (cube(maxsize+2,maxsize+2,maxsize+2))
     timestep = (room_dimension / speed_of_gas_molecules) / maxsize
     distance_between_blocks = room_dimension / maxsize
     DTerm = diffusion_coefficient * timestep / &
 &(distance_between_blocks * distance_between_blocks)    
-    Call get_command_argument(2, temp) 
+    Call get_command_argument(command_argument_count(), temp) 
     if (temp == "y") then
         partition = .true.
     endif
