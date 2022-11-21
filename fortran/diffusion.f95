@@ -6,31 +6,34 @@
 program diffusion
     implicit none
 
-    integer :: i, j, k, l, m, n, temp = 0
-    integer :: maxsize = 0 ! dimensions of the cube in terms of cells
+    integer :: i, j, k, l, m, n
+    character :: temp 
+    integer :: maxsize ! dimensions of the cube in terms of cells
     ! real, dimension(maxsize+2, maxsize+2, maxsize+2) :: cube
     real, dimension(:,:,:), allocatable :: cube
     real :: diffusion_coefficient = 0.175, room_dimension = 5
     real :: speed_of_gas_molecules = 250.0, timestep, distance_between_blocks, DTerm
     real :: time = 0.0, ratio = 0.0, change, sumval = 0.0, maxval, minval
-    logical :: partition = .true.
+    logical :: partition = .false.
     integer :: partX, partY
+    Call get_command_argument(1, temp)
+    read(temp,*) maxsize
+    allocate (cube(maxsize+2,maxsize+2,maxsize+2))
     timestep = (room_dimension / speed_of_gas_molecules) / maxsize
     distance_between_blocks = room_dimension / maxsize
-    DTerm = diffusion_coefficient * timestep / (distance_between_blocks * distance_between_blocks)
-    print *,"Enter value for maxsize: "
-    read (*,*)maxsize
-    allocate (cube(maxsize+2,maxsize+2,maxsize+2))
-    ! if ( ierr /= 0 ) then
-    !     print *, "Could not allocate memory - halting run."
-    !     stop
-    ! endif
-    print *, "75% partition y/n? "
-    read (*,*)temp
+    DTerm = diffusion_coefficient * timestep / &
+&(distance_between_blocks * distance_between_blocks)    
+    Call get_command_argument(2, temp) 
+    if (temp == "y") then
+        partition = .true.
+    endif
     ! determining location of partition
     if (partition) then
         partX = ceiling((maxsize+2)/2.0)
-        partY = ceiling((maxsize+2)*0.75)
+        partY = ceiling((maxsize+2)*0.25)+1
+        if (modulo(maxsize, 2) == 0) then
+            partY = partY - 1
+        endif
     endif
     !zeroing the cube and placing partition if necessary
     do i = 1,maxsize+2
@@ -45,7 +48,6 @@ program diffusion
         enddo
     enddo
     cube(2,2,2) = 1.0e21 ! filling first cell
-
     do while (ratio < 0.99)
         !diffusion
         do i = 2,maxsize+1
@@ -62,6 +64,7 @@ program diffusion
                                 &(( i == l+1 ) .and. ( j == m ) .and. ( k == n)) .or. &
                                 &(( i == l-1 ) .and. ( j == m ) .and. ( k == n))) then
                                     if (partition) then
+ 
                                         if (cube(i,j,k) /= 2.0 .and. cube(l,m,n) /= 2.0) then
                                             change = (cube(i,j,k) - cube(l,m,n)) * DTerm
                                             cube(i,j,k) = cube(i,j,k) - change
@@ -97,7 +100,7 @@ program diffusion
         enddo
         ratio = minval / maxval
         ! output
-        print '(f12.8, " ",4e20.6, " ",e21.4,/)', time, cube(2,2,2), cube(maxsize+1,2,2), &
+        print '(f6.2, " ",4e11.3, " ",e10.4,/)', time, cube(2,2,2), cube(maxsize+1,2,2), &
         &cube(maxsize+1,maxsize+1,2), cube(maxsize+1,maxsize+1,maxsize+1), sumval
     enddo
     print '("Box equlibrated in ",f12.8, "seconds of simulated time.")', time

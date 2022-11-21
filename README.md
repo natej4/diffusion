@@ -29,9 +29,10 @@ python3 diffusion.py
 ```
 In a futile attempt to optimize python, I implemented comprehensions for the giant nested for loop, that is why it looks a bit different than other languages
 ### Fortran
+Fortran requires command line arguments, after the program name put an integer for the maxsize value and y or n to specify partition option
 ```bash
 gfortran diffusion.f95 -o diffusion
-./diffusion
+./diffusion *maxsize' y/n
 ```
 ### Lisp
 ```bash
